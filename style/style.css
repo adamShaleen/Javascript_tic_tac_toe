@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
+body {
+  text-align: center;
+  font-family: 'Press Start 2P', cursive;
+}
+
+#choosePlayerContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.choose-player-button {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+#gameInProgressContainer {
+  display: flex;
+  justify-content: center;
+}
+
+#gameContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameBoard {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+  grid-gap: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.game-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 2em;
+  border: 1px solid;
+}
+
+.cursor {
+  cursor: pointer;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style/style.css" media="screen">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tic Tac Toe</title>
+    </head>
+    <body>
+        <h2>Tic Tac Toe</h2>
+
+        <div id="choosePlayerContainer">
+          <h6 id="chooseXButton" class="choose-player-button cursor">Play as "X"</h6>
+          <h6 id="chooseOButton" class="choose-player-button cursor">Play as "O"</h6>
+        </div>
+
+        <div id="gameInProgressContainer">
+          <h6>Game in Progress</h6>
+        </div>
+
+        <div id="gameContainer">
+          <div id="gameBoard">
+            <div class="game-cell cursor">X</div>
+            <div class="game-cell cursor"></div>
+            <div class="game-cell cursor">O</div>
+            <div class="game-cell cursor"></div>
+            <div class="game-cell cursor">O</div>
+            <div class="game-cell cursor"></div>
+            <div class="game-cell cursor"></div>
+            <div class="game-cell cursor"></div>
+            <div class="game-cell cursor">X</div>
+          </div>
+        </div>
+
+        <h6 id="resetButton" class="cursor">Reset Game</h6>
+    </body>
+
+    <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+</html>

@@ -1,70 +1,78 @@
 $(document).ready(function() {
 
   // Defaults on load ================================================
-  var currentGame, availableMoves;
-  $("#gameInProgressContainer").hide();
-  $("#resetButton").hide();
+  var player, availableMoves;
+  loadApp();
 
   // Player Select / Game create =====================================
   $("#chooseXButton").click(function() {
-      $("#choosePlayerContainer").hide();
-      $("#gameInProgressContainer").show();
-      $("#resetButton").show();
-      loadAllMoves();
-      currentGame = new Game("X");
+      startGame("X");
   });
 
   $("#chooseOButton").click(function() {
-      $("#choosePlayerContainer").hide();
-      $("#gameInProgressContainer").show();
-      $("#resetButton").show();
-      loadAllMoves();
-      currentGame = new Game("O");
+      startGame("O");
   })
 
   // Gameplay Move ===================================================
   $(".game-cell").click(function() {
-      if ($("#gameInProgressContainer").is(":visible")) {
-          makeMove(currentGame.player, $(this).attr('id'));
-          computerAddMove(currentGame);
+      if (gameInProgress()) {
+          makeMove(player, $(this).attr('id'));
+          computerMakeMove();
       }
   });
 
   // Reset Game ======================================================
   $("#resetButton").click(function() {
-    $("#gameInProgressContainer").hide();
-    $("#resetButton").hide();
-    $("#choosePlayerContainer").show();
-    deleteGame(currentGame);
+    deleteGame();
   });
 
   // Utilities =======================================================
-
-  function Game(player) {
-      this.player = player;
-      this.gameOver = false;
+  function loadApp() {
+      loadAllMoves();
+      $("#gameInProgressContainer").hide();
+      $("#resetButton").hide();
   }
 
-  function computerAddMove(game) {
-      var computer = game.player === "X" ? "O" : "X";
+  function startGame(playerChoice) {
+      $("#choosePlayerContainer").hide();
+      $("#gameInProgressContainer").show();
+      $("#resetButton").show();
+      player = playerChoice;
+  }
+
+  function computerMakeMove() {
+      var computer = determinePlayer();
       var computerMove = availableMoves[Math.floor(Math.random()*availableMoves.length)];
       makeMove(computer, computerMove);
   }
 
+  function makeMove(player, move) {
+      availableMoves = availableMoves.filter(function(usedMove) { return usedMove !== move} );
+      $("#" + move).html(player);
+  }
+
+  function deleteGame() {
+    player = "";
+    $(".game-cell").html("");
+    $("#gameInProgressContainer").hide();
+    $("#resetButton").hide();
+    $("#choosePlayerContainer").show();
+    loadAllMoves();
+  }
+
+  function gameInProgress() {
+      if ($("#gameInProgressContainer").is(":visible")) {
+          return true;
+      }
+      return false;
+  }
+
+  function determinePlayer() {
+      return player === "X" ? "O" : "X";
+  }
+
   function loadAllMoves() {
       availableMoves = ["cell1", "cell2", "cell3", "cell4", "cell5", "cell6", "cell7", "cell8", "cell9"];
-  }
-
-  function makeMove(player, move) {
-      availableMoves = availableMoves.filter(function(e) { return e !== move} );
-      $("#" + move).html(player);
-      console.log(availableMoves);
-  }
-
-  function deleteGame(game) {
-    delete game.player;
-    delete game.gameOver;
-    $(".game-cell").html("");
   }
 
 });

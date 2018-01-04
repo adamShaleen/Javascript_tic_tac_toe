@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // Defaults on load ================================================
-  var currentGame;
+  var currentGame, availableMoves;
   $("#gameInProgressContainer").hide();
   $("#resetButton").hide();
 
@@ -10,6 +10,7 @@ $(document).ready(function() {
       $("#choosePlayerContainer").hide();
       $("#gameInProgressContainer").show();
       $("#resetButton").show();
+      loadAllMoves();
       currentGame = new Game("X");
   });
 
@@ -17,14 +18,16 @@ $(document).ready(function() {
       $("#choosePlayerContainer").hide();
       $("#gameInProgressContainer").show();
       $("#resetButton").show();
+      loadAllMoves();
       currentGame = new Game("O");
   })
 
   // Gameplay Move ===================================================
   $(".game-cell").click(function() {
-      addMove(currentGame, $(this).attr('id'));
-      $(this).html(currentGame.player);
-      console.log(currentGame.moves);
+      if ($("#gameInProgressContainer").is(":visible")) {
+          makeMove(currentGame.player, $(this).attr('id'));
+          computerAddMove(currentGame);
+      }
   });
 
   // Reset Game ======================================================
@@ -39,17 +42,27 @@ $(document).ready(function() {
 
   function Game(player) {
       this.player = player;
-      this.moves = [];
       this.gameOver = false;
   }
 
-  function addMove(game, move) {
-    game.moves.push(move);
+  function computerAddMove(game) {
+      var computer = game.player === "X" ? "O" : "X";
+      var computerMove = availableMoves[Math.floor(Math.random()*availableMoves.length)];
+      makeMove(computer, computerMove);
+  }
+
+  function loadAllMoves() {
+      availableMoves = ["cell1", "cell2", "cell3", "cell4", "cell5", "cell6", "cell7", "cell8", "cell9"];
+  }
+
+  function makeMove(player, move) {
+      availableMoves = availableMoves.filter(function(e) { return e !== move} );
+      $("#" + move).html(player);
+      console.log(availableMoves);
   }
 
   function deleteGame(game) {
     delete game.player;
-    delete game.moves;
     delete game.gameOver;
     $(".game-cell").html("");
   }

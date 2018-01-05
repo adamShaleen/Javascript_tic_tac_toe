@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // Defaults on load ================================================
-  var player, availableMoves;
+  var player, availableMoves, madeMoves = [];
   loadApp();
 
   // Player Select / Game create =====================================
@@ -17,7 +17,9 @@ $(document).ready(function() {
   $(".game-cell").click(function() {
       if (gameInProgress()) {
           makeMove(player, $(this).attr('id'));
+          checkForWinner();
           computerMakeMove();
+          checkForWinner();
       }
   });
 
@@ -48,11 +50,13 @@ $(document).ready(function() {
 
   function makeMove(player, move) {
       availableMoves = availableMoves.filter(function(usedMove) { return usedMove !== move} );
+      madeMoves.push({player : player, move : move});
       $("#" + move).html(player);
   }
 
   function deleteGame() {
     player = "";
+    madeMoves = [];
     $(".game-cell").html("");
     $("#gameInProgressContainer").hide();
     $("#resetButton").hide();
@@ -74,5 +78,25 @@ $(document).ready(function() {
   function loadAllMoves() {
       availableMoves = ["cell1", "cell2", "cell3", "cell4", "cell5", "cell6", "cell7", "cell8", "cell9"];
   }
+
+  function checkForWinner() {
+      if (madeMoves.length >= 4) {
+          var xMoves = madeMoves.filter(x => x.player === "X").map(m => m.move).sort();
+          var oMoves = madeMoves.filter(o => o.player === "O").map(m => m.move).sort();
+          console.log(xMoves, oMoves);
+      }
+
+      return false;
+  }
+
+  // winning combos (8)
+  // cell1 cell2 cell3
+  // cell1 cell5 cell9
+  // cell1 cell4 cell7
+  // cell2 cell5 cell8
+  // cell3 cell5 cell7
+  // cell3 cell6 cell9
+  // cell4 cell5 cell6
+  // cell7 cell8 cell9
 
 });

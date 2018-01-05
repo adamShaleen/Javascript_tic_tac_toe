@@ -48,3 +48,7 @@ body {
 .cursor {
   cursor: pointer;
 }
+
+.winning-highlight {
+    background-color: rgb(199, 139, 255);
+}

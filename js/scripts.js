@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // Defaults on load ================================================
-  var player, availableMoves, madeMoves = [];
+  var player, winner, availableMoves, madeMoves = [];
   loadApp();
 
   // Player Select / Game create =====================================
@@ -17,8 +17,9 @@ $(document).ready(function() {
   $(".game-cell").click(function() {
       if (gameInProgress()) {
           makeMove(player, $(this).attr('id'));
-          checkForWinner();
-          computerMakeMove();
+          if (!checkForWinner()) {
+            computerMakeMove();
+          }
           checkForWinner();
       }
   });
@@ -33,6 +34,7 @@ $(document).ready(function() {
       loadAllMoves();
       $("#gameInProgressContainer").hide();
       $("#resetButton").hide();
+      $("#winnerAlert").hide();
   }
 
   function startGame(playerChoice) {
@@ -58,10 +60,12 @@ $(document).ready(function() {
     player = "";
     madeMoves = [];
     $(".game-cell").html("");
+    $(".game-cell").removeClass("winning-highlight");
     $("#gameInProgressContainer").hide();
     $("#resetButton").hide();
     $("#choosePlayerContainer").show();
     loadAllMoves();
+    $("#winnerAlert").hide();
   }
 
   function gameInProgress() {
@@ -83,20 +87,87 @@ $(document).ready(function() {
       if (madeMoves.length >= 4) {
           var xMoves = madeMoves.filter(x => x.player === "X").map(m => m.move).sort();
           var oMoves = madeMoves.filter(o => o.player === "O").map(m => m.move).sort();
-          console.log(xMoves, oMoves);
+
+          if (checkCombo(xMoves)) {
+            winner = "X";
+            showWinner(winner);
+            return true;
+          }
+
+          if (checkCombo(oMoves)) {
+              winner = "O";
+              showWinner(winner);
+              return true;
+          }
       }
 
       return false;
   }
 
-  // winning combos (8)
-  // cell1 cell2 cell3
-  // cell1 cell5 cell9
-  // cell1 cell4 cell7
-  // cell2 cell5 cell8
-  // cell3 cell5 cell7
-  // cell3 cell6 cell9
-  // cell4 cell5 cell6
-  // cell7 cell8 cell9
+  function checkCombo(movesArray) {
+
+      if (movesArray.includes("cell1") && movesArray.includes("cell2") && movesArray.includes("cell3")) {
+          $("#cell1").addClass("winning-highlight");
+          $("#cell2").addClass("winning-highlight");
+          $("#cell3").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell1") && movesArray.includes("cell5") && movesArray.includes("cell9")) {
+          $("#cell1").addClass("winning-highlight");
+          $("#cell5").addClass("winning-highlight");
+          $("#cell9").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell1") && movesArray.includes("cell4") && movesArray.includes("cell7")) {
+          $("#cell1").addClass("winning-highlight");
+          $("#cell4").addClass("winning-highlight");
+          $("#cell7").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell2") && movesArray.includes("cell5") && movesArray.includes("cell8")) {
+          $("#cell2").addClass("winning-highlight");
+          $("#cell5").addClass("winning-highlight");
+          $("#cell8").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell3") && movesArray.includes("cell5") && movesArray.includes("cell7")) {
+          $("#cell3").addClass("winning-highlight");
+          $("#cell5").addClass("winning-highlight");
+          $("#cell7").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell3") && movesArray.includes("cell6") && movesArray.includes("cell9")) {
+          $("#cell3").addClass("winning-highlight");
+          $("#cell6").addClass("winning-highlight");
+          $("#cell9").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell4") && movesArray.includes("cell5") && movesArray.includes("cell6")) {
+          $("#cell4").addClass("winning-highlight");
+          $("#cell5").addClass("winning-highlight");
+          $("#cell6").addClass("winning-highlight");
+          return true;
+      }
+
+      if (movesArray.includes("cell7") && movesArray.includes("cell8") && movesArray.includes("cell9")) {
+          $("#cell7").addClass("winning-highlight");
+          $("#cell8").addClass("winning-highlight");
+          $("#cell9").addClass("winning-highlight");
+          return true;
+      }
+
+      return false;
+  }
+
+  function showWinner(winner) {
+      $("#winnerAlert").html(winner + " is the winner!");
+      $("#winnerAlert").show();
+  }
 
 });

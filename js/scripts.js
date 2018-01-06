@@ -16,8 +16,8 @@ $(document).ready(function() {
   // Gameplay Move ===================================================
   $(".game-cell").click(function() {
       if (gameInProgress()) {
-          makeMove(player, $(this).attr('id'));
-          if (!checkForWinner()) {
+          var moveMade = makeMove(player, $(this).attr('id'));
+          if (!checkForWinner() && moveMade) {
             computerMakeMove();
           }
           if (!checkForWinner() && availableMoves.length === 0) {
@@ -55,9 +55,14 @@ $(document).ready(function() {
   }
 
   function makeMove(player, move) {
-      availableMoves = availableMoves.filter(function(usedMove) { return usedMove !== move} );
-      madeMoves.push({player : player, move : move});
-      $("#" + move).html(player);
+      if ($("#" + move).text().length === 0) {
+          availableMoves = availableMoves.filter(function(usedMove) { return usedMove !== move} );
+          madeMoves.push({player : player, move : move});
+          $("#" + move).html(player);
+          return true;
+      }
+
+      return false;
   }
 
   function deleteGame() {

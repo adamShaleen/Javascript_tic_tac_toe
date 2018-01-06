@@ -20,6 +20,10 @@ $(document).ready(function() {
           if (!checkForWinner()) {
             computerMakeMove();
           }
+          if (!checkForWinner() && availableMoves.length === 0) {
+              $("#winnerAlert").html("DRAW").show();
+              return;
+          }
           checkForWinner();
       }
   });
@@ -106,68 +110,67 @@ $(document).ready(function() {
 
   function checkCombo(movesArray) {
 
+      var winningRow = [];
+
       if (movesArray.includes("cell1") && movesArray.includes("cell2") && movesArray.includes("cell3")) {
-          $("#cell1").addClass("winning-highlight");
-          $("#cell2").addClass("winning-highlight");
-          $("#cell3").addClass("winning-highlight");
+          winningRow.push("cell1", "cell2", "cell3");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell1") && movesArray.includes("cell5") && movesArray.includes("cell9")) {
-          $("#cell1").addClass("winning-highlight");
-          $("#cell5").addClass("winning-highlight");
-          $("#cell9").addClass("winning-highlight");
+          winningRow.push("cell1", "cell5", "cell9");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell1") && movesArray.includes("cell4") && movesArray.includes("cell7")) {
-          $("#cell1").addClass("winning-highlight");
-          $("#cell4").addClass("winning-highlight");
-          $("#cell7").addClass("winning-highlight");
+          winningRow.push("cell1", "cell4", "cell7");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell2") && movesArray.includes("cell5") && movesArray.includes("cell8")) {
-          $("#cell2").addClass("winning-highlight");
-          $("#cell5").addClass("winning-highlight");
-          $("#cell8").addClass("winning-highlight");
+          winningRow.push("cell2", "cell5", "cell8");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell3") && movesArray.includes("cell5") && movesArray.includes("cell7")) {
-          $("#cell3").addClass("winning-highlight");
-          $("#cell5").addClass("winning-highlight");
-          $("#cell7").addClass("winning-highlight");
+          winningRow.push("cell3", "cell5", "cell7");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell3") && movesArray.includes("cell6") && movesArray.includes("cell9")) {
-          $("#cell3").addClass("winning-highlight");
-          $("#cell6").addClass("winning-highlight");
-          $("#cell9").addClass("winning-highlight");
+          winningRow.push("cell3", "cell6", "cell9");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell4") && movesArray.includes("cell5") && movesArray.includes("cell6")) {
-          $("#cell4").addClass("winning-highlight");
-          $("#cell5").addClass("winning-highlight");
-          $("#cell6").addClass("winning-highlight");
+          winningRow.push("cell4", "cell5", "cell6");
+          highlightWin(winningRow);
           return true;
       }
 
       if (movesArray.includes("cell7") && movesArray.includes("cell8") && movesArray.includes("cell9")) {
-          $("#cell7").addClass("winning-highlight");
-          $("#cell8").addClass("winning-highlight");
-          $("#cell9").addClass("winning-highlight");
+          winningRow.push("cell7", "cell8", "cell9");
+          highlightWin(winningRow);
           return true;
       }
 
       return false;
   }
 
+  function highlightWin(arr) {
+      $.each(arr, function(index, value) {
+          $("#" + value).addClass("winning-highlight");
+      });
+  }
+
   function showWinner(winner) {
-      $("#winnerAlert").html(winner + " is the winner!");
-      $("#winnerAlert").show();
+      $("#winnerAlert").html(winner + " is the winner!").show();
   }
 
 });
